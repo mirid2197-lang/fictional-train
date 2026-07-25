@@ -18,6 +18,7 @@ from aiogram.enums import ParseMode, ContentType
 from aiogram.exceptions import (
     TelegramBadRequest, TelegramForbiddenError
 )
+from aiogram.client.default import DefaultBotProperties  # <-- НОВЫЙ ИМПОРТ
 
 # Настройка логирования
 logging.basicConfig(
@@ -32,8 +33,11 @@ ADMIN_ID = 8071140258
 PRIVATE_CHANNEL_LINK = "https://t.me/+1U-jYlcjtbo0ZDQy"
 START_PHOTO_PATH = "Start.jpg"
 
-# Инициализация бота и диспетчера
-bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+# Инициализация бота и диспетчера (ИСПРАВЛЕНО)
+bot = Bot(
+    token=BOT_TOKEN,
+    default=DefaultBotProperties(parse_mode=ParseMode.HTML)  # <-- НОВЫЙ СПОСОБ
+)
 storage = MemoryStorage()
 dp = Dispatcher(storage=storage)
 
