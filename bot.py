@@ -16,7 +16,7 @@ from aiogram.types import (
 )
 from aiogram.enums import ParseMode, ContentType
 from aiogram.exceptions import (
-    TelegramBadRequest, TelegramForbiddenError, TelegramNotFoundError
+    TelegramBadRequest, TelegramForbiddenError
 )
 
 # Настройка логирования
@@ -204,10 +204,10 @@ async def safe_send_message(
     except TelegramForbiddenError:
         logger.warning(f"Пользователь {chat_id} заблокировал бота")
         return None
-    except TelegramNotFoundError:
-        logger.warning(f"Чат {chat_id} не найден")
-        return None
     except Exception as e:
+        if "not found" in str(e).lower() or "chat not found" in str(e).lower():
+            logger.warning(f"Чат {chat_id} не найден")
+            return None
         logger.error(f"Ошибка отправки сообщения: {e}")
         return None
 
@@ -494,7 +494,7 @@ async def receive_question(message: Message, state: FSMContext):
 
         confirm_text = (
             "✅ <b>ВАШ ВОПРОС ОТПРАВЛЕН</b>\n\n"
-            "📨 Сообщение доставлено команде Ceko team\n"
+            "📨 Сообщение доставлено команде Николаевич God team\n"
             "⏳ Ожидайте ответа в ближайшее время\n\n"
             "<i>Спасибо за обращение!</i>"
         )
@@ -544,7 +544,7 @@ async def decline_question(callback: CallbackQuery):
 
         decline_text = (
             "❌ <b>ВАШЕ ОБРАЩЕНИЕ ОТКЛОНЕНО</b>\n\n"
-            "Команда Ceko team отклонила ваш вопрос\n"
+            "Команда Николаевич God team отклонила ваш вопрос\n"
             "Возможно, он не соответствует правилам сообщества\n\n"
             "📝 Вы можете задать другой вопрос"
         )
@@ -606,7 +606,7 @@ async def send_admin_response(message: Message, state: FSMContext):
             return
 
         notify_text = (
-            "📨 <b>ОТВЕТ ОТ CEKO TEAM</b>\n\n"
+            "📨 <b>ОТВЕТ ОТ Николаевич God team</b>\n\n"
             "Вы получили ответ на ваш вопрос:"
         )
         await safe_send_message(user_id, text=notify_text)
@@ -778,7 +778,7 @@ async def send_announcement(message: Message, state: FSMContext):
         for user_id in users_copy:
             result = await safe_send_message(
                 user_id,
-                text=f"📢 <b>ОБЪЯВЛЕНИЕ ОТ CEKO TEAM</b>\n\n{message.text}"
+                text=f"📢 <b>ОБЪЯВЛЕНИЕ ОТ Николаевич God team</b>\n\n{message.text}"
             )
             if result:
                 success_count += 1
@@ -915,7 +915,7 @@ async def handle_unknown_messages(message: Message):
 
 # Запуск бота
 async def main():
-    logger.info("🤖 Бот Ceko team запускается...")
+    logger.info("🤖 Бот Николаевич God team запускается...")
     logger.info(f"👨‍💻 ID администратора: {ADMIN_ID}")
     logger.info(f"📸 Стартовое фото: {'Загружено' if os.path.exists(START_PHOTO_PATH) else 'Не найдено'}")
 
